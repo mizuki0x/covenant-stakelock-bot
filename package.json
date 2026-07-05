@@ -1,0 +1,12 @@
+{
+  "name": "covenant-stakelock-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Posts total staked + locked $CVNT to Telegram twice a day, read from Streamflow.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "post": "node post.mjs",
+    "dry": "DRY_RUN=1 node post.mjs"
+  }
+}

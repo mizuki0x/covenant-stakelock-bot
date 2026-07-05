@@ -1,0 +1,13 @@
+services:
+  - type: cron
+    name: covenant-stakelock-bot
+    runtime: node
+    plan: starter
+    schedule: "0 9,21 * * *"
+    buildCommand: npm install
+    startCommand: node post.mjs
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
