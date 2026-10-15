@@ -15,23 +15,19 @@ async function readTotals() {
   const d = await res.json();
   const byType = d.stats?.byType ?? {};
   const staked = toTokens(byType.STAKE_POOL?.tokensDeposited);
-  const locked = toTokens(byType.TOKEN_LOCK?.tokensLocked);
   const supply = toTokens(d.tokenSupply);
   // Never post a zeroed-out summary if the upstream returned nothing usable.
-  if (staked <= 0 && locked <= 0) throw new Error('dashboard returned no staked/locked amounts');
-  return { staked, locked, supply };
+  if (staked <= 0) throw new Error('dashboard returned no staked amount');
+  return { staked, supply };
 }
 
-function caption({ staked, locked, supply }) {
-  const total = staked + locked;
-  const pct = supply > 0 ? ((total / supply) * 100).toFixed(1) : null;
+function caption({ staked, supply }) {
+  const pct = supply > 0 ? ((staked / supply) * 100).toFixed(1) : null;
   return [
     '</> Covenant $CVNT',
     '',
-    `Staked: ${fmt(staked)} CVNT`,
-    `Locked: ${fmt(locked)} CVNT`,
-    '',
-    pct ? `${fmt(total)} CVNT secured onchain (${pct}% of supply)` : `${fmt(total)} CVNT secured onchain`,
+    `Total staked: ${fmt(staked)} CVNT`,
+    ...(pct ? [`${pct}% of total supply`] : []),
   ].join('\n');
 }
 

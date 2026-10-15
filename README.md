@@ -1,15 +1,15 @@
 # covenant-stakelock-bot
 
-Posts the total **staked** and **locked** $CVNT to a Telegram group twice a day, with a short video.
+Posts the total **staked** $CVNT and its share of supply to a Telegram group twice a day, with a short video.
 
-Numbers come straight from the Streamflow token dashboard for the CVNT mint
+The number comes straight from the Streamflow token dashboard for the CVNT mint
 (`2mNVZ6…pump`), the same source as
 [app.streamflow.finance](https://app.streamflow.finance/token-dashboard/solana/mainnet/2mNVZ6aEjrGwiUVCfz7XGWpiXuWzgBDoznwE579upump):
 
 - **Staked** = `stats.byType.STAKE_POOL.tokensDeposited`
-- **Locked** = `stats.byType.TOKEN_LOCK.tokensLocked`
+- **Share of supply** = staked / `tokenSupply`
 
-Both cross-check against the on-chain stake-pool vaults and lock contracts.
+It cross-checks against the on-chain stake-pool vaults.
 
 ## Run locally
 
