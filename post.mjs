@@ -3,6 +3,10 @@ import { readFile } from 'node:fs/promises';
 const MINT = process.env.CVNT_MINT || '2mNVZ6aEjrGwiUVCfz7XGWpiXuWzgBDoznwE579upump';
 const DASHBOARD = `https://api.streamflow.finance/v2/api/token-dashboards/SOLANA/${MINT}`;
 const DECIMALS = 6;
+// The Covenant mark as a Telegram custom emoji (set cvnt_by_CovenantStakeBot);
+// readers who can't see custom emoji get the fallback character instead.
+const MARK_EMOJI_ID = process.env.MARK_EMOJI_ID || '5949529723670373823';
+const MARK_FALLBACK = '🟪';
 
 const toTokens = (v) => Number(v ?? 0) / 10 ** DECIMALS;
 const fmt = (n) => Math.round(n).toLocaleString('en-US');
@@ -24,7 +28,7 @@ async function readTotals() {
 function caption({ staked, supply }) {
   const pct = supply > 0 ? ((staked / supply) * 100).toFixed(1) : null;
   return [
-    '</> Covenant $CVNT',
+    `${MARK_FALLBACK} Covenant $CVNT`,
     '',
     `Total staked: ${fmt(staked)} CVNT`,
     ...(pct ? [`${pct}% of total supply`] : []),
@@ -42,6 +46,9 @@ async function post(text) {
   const form = new FormData();
   form.append('chat_id', chat);
   form.append('caption', text);
+  form.append('caption_entities', JSON.stringify([
+    { type: 'custom_emoji', offset: 0, length: MARK_FALLBACK.length, custom_emoji_id: MARK_EMOJI_ID },
+  ]));
   form.append('video', new Blob([video], { type: 'video/mp4' }), 'stakelock.mp4');
   const res = await fetch(`https://api.telegram.org/bot${token}/sendVideo`, { method: 'POST', body: form });
   const body = await res.json();

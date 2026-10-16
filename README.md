@@ -11,6 +11,11 @@ The number comes straight from the Streamflow token dashboard for the CVNT mint
 
 It cross-checks against the on-chain stake-pool vaults.
 
+The caption opens with the Covenant mark as a custom emoji (`MARK_EMOJI_ID`, default
+`5949529723670373823`, set `cvnt_by_CovenantStakeBot`); the bot can send it because its
+owner has Telegram Premium. The video (`assets/stakelock.mp4`) is the TOTAL STAKED clip with
+an arrow pointing down at the caption; source in covenant-brand-render/notices (`totals`).
+
 ## Run locally
 
 ```bash
